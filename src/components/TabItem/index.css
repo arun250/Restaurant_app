@@ -1,0 +1,14 @@
+.tabList {
+  list-style-type: none;
+}
+.menuCategoryButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin-right: 10px;
+}
+.activeButton {
+  color: red;
+  border-bottom: 1px solid red;
+}

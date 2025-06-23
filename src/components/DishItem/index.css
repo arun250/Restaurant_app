@@ -1,0 +1,64 @@
+.DishItemContianer {
+  border: 1px solid gray;
+  height: 300px;
+  width: 95%;
+  box-shadow:
+    0 4px 8px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+.veg/non-vegIcon {
+  width: 20px;
+  height: 20px;
+}
+.dishName {
+  font-size: 15px;
+  font-weight: bold;
+}
+.sarValue {
+  font-size: 15px;
+  font-weight: bold;
+  color: grey;
+}
+
+.Ingredients {
+  color: lightslategray;
+  font-size: 18px;
+}
+
+.incrementdecrementButtonContainer {
+  width: 100px;
+  border-radius: 20px;
+  background-color: green;
+  height: 35px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.bodyContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  align-items: center;
+  list-style-type: none;
+}
+
+.midSection {
+  border: 2px solid gray;
+  width: 400px;
+}
+.minusplusIconButton {
+  border: none;
+  background-color: transparent;
+  color: white;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.dishImage {
+  width: 100px;
+  height: 100px;
+}
