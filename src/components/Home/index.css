@@ -12,6 +12,15 @@
   padding: 20px;
 }
 
+.logout-button {
+  color: white;
+  background-color: blue;
+  padding: 10px 20px 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
 @media (min-width: 768px) {
   .unorderedListContainer {
     margin-left: 0px;
@@ -116,4 +125,14 @@
     font-size: 16px;
     display: flex;
   }
+}
+
+.addToItemButton {
+  background-color: blue;
+  padding: 10px 20px 10px 20px;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  font-weight: bold;
+  margin-top: 10px;
 }

@@ -2,7 +2,15 @@ import {Component} from 'react'
 
 import {IoCartOutline} from 'react-icons/io5'
 
+import {Link} from 'react-router-dom'
+
+import Cookies from 'js-cookie'
+
 import TabItem from '../TabItem'
+
+import Header from '../Header'
+
+import CartContext from '../../context/CartContext'
 
 import './index.css'
 
@@ -17,19 +25,26 @@ class Home extends Component {
 
   componentDidMount() {
     this.getMenuList()
+    const {dishCounts} = this.state
+    const {cartList} = this.context
+    cartList.forEach(item => {
+      dishCounts[item.dishId] = item.quantity
+    })
+    return cartList
   }
 
   onClickPlusButton = dishId => {
-    this.setState(prevState => ({
+    const plus = this.setState(prevState => ({
       dishCounts: {
         ...prevState.dishCounts,
         [dishId]: (prevState.dishCounts[dishId] || 0) + 1,
       },
     }))
+    return plus
   }
 
   onClickMinusButton = dishId => {
-    this.setState(prevState => {
+    const minus = this.setState(prevState => {
       const currentCount = prevState.dishCounts[dishId] || 0
 
       if (currentCount > 0) {
@@ -40,6 +55,7 @@ class Home extends Component {
           },
         }
       }
+      return minus
     })
   }
 
@@ -88,114 +104,151 @@ class Home extends Component {
       menuList: fetchedData,
       activeTabId: fetchedData[0].menuCategoryId,
       cafeName: restaurantName,
+      categoryDishes: fetchedData.categoryDishes,
     })
   }
+
   renderNavbar = () => {
-    const {dishCounts} = this.state
-    const totalCount = Object.values(dishCounts).reduce(
-      (sum, qty) => sum + qty,
-      0,
-    )
+    const {dishCounts, cafeName} = this.state
+
     return (
       <>
-        <nav className="navbarContainer">
-          <h1 className="logoHeading">UNI Resto Cafe</h1>
-          <div className="orderTextContainer">
-            <p className="myOrderText">My Orders</p>
-            <IoCartOutline size={25} />
-            <span>{totalCount}</span>
-          </div>
-        </nav>
+        <Header restaurantName={cafeName} />
       </>
     )
   }
 
+  renderCartItems = () => (
+    <CartContext.Consumer>
+      {value => {
+        const {
+          cartList,
+          incrementCartItemQuantity,
+          decrementCartItemQuantity,
+          addCartItem,
+        } = value
+        const {menuList, activeTabId} = this.state
+
+        if (!menuList) return null
+
+        const filteredDishes = this.getFilteredDishes()
+        const allDishes = filteredDishes.flatMap(
+          category => category.categoryDishes,
+        )
+
+        return (
+          <>
+            <ul className="unorderedListContainer">
+              {menuList.map(eachItem => (
+                <TabItem
+                  key={eachItem.menuCategoryId}
+                  menuList={eachItem}
+                  onClickTabItem={this.onClickTabItem}
+                  onActive={activeTabId === eachItem.menuCategoryId}
+                />
+              ))}
+            </ul>
+
+            <ul className="unorderedList">
+              {allDishes.map(eachCategory => {
+                const {dishCounts} = this.state
+                const quantity = dishCounts[eachCategory.dishId] || 0
+
+                const existingItem = cartList.find(
+                  item => item.dishId === eachCategory.dishId,
+                )
+                // const quantity = existingItem?.quantity || 0
+
+                return (
+                  <li className="bodyContainer" key={eachCategory.dishId}>
+                    <div className="DishItemContianer">
+                      <img
+                        src={eachCategory.nxturl}
+                        alt="vegIcon"
+                        className="veg/non-vegIcon"
+                      />
+
+                      <div className="midSection">
+                        <p className="dishName">{eachCategory.dishName}</p>
+                        <p className="sarValue">
+                          {eachCategory.dishCurrency} {eachCategory.dishPrice}
+                        </p>
+                        <p className="Ingredients">
+                          {eachCategory.dishDescription}
+                        </p>
+
+                        {eachCategory.dishAvailability ? (
+                          <>
+                            <div className="incrementdecrementButtonContainer">
+                              <button
+                                className="minusplusIconButton"
+                                disabled={quantity === 0}
+                                onClick={() =>
+                                  this.onClickMinusButton(eachCategory.dishId)
+                                }
+                              >
+                                -
+                              </button>
+                              <p>{quantity}</p>
+                              <button
+                                className="minusplusIconButton"
+                                onClick={() =>
+                                  this.onClickPlusButton(eachCategory.dishId)
+                                }
+                              >
+                                +
+                              </button>
+                            </div>
+                            {quantity > 0 && (
+                              <button
+                                className="addToItemButton"
+                                type="button"
+                                onClick={() => {
+                                  value.addCartItem({...eachCategory, quantity})
+                                }}
+                              >
+                                Add to Cart
+                              </button>
+                            )}
+                          </>
+                        ) : (
+                          <p>Not available</p>
+                        )}
+
+                        {eachCategory.addonCat.length > 0 && (
+                          <p>Customizations available</p>
+                        )}
+                      </div>
+
+                      <p className="calories">
+                        {eachCategory.dishCalories} calories
+                      </p>
+                      <img
+                        className="dishImage"
+                        src={eachCategory.dishImage}
+                        alt="dish"
+                      />
+                    </div>
+                  </li>
+                )
+              })}
+            </ul>
+          </>
+        )
+      }}
+    </CartContext.Consumer>
+  )
+
   render() {
-    const {menuList, activeTabId, dishCounts} = this.state
-    if (menuList === undefined) return null
-    console.log(menuList)
-
-    const filteredDishes = this.getFilteredDishes()
-    const allDishes = filteredDishes.flatMap(
-      category => category.categoryDishes,
-    )
-    const toggleDishes = activeTabId === '' ? allDishes : filteredDishes
-
     return (
       <>
         {this.renderNavbar()}
-        <ul className="unorderedListContainer">
-          {menuList.map(eachItem => (
-            <TabItem
-              key={eachItem.menuCategoryId}
-              menuList={eachItem}
-              onClickTabItem={this.onClickTabItem}
-              onActive={activeTabId === eachItem.menuCategoryId}
-            />
-          ))}
-        </ul>
-
-        <ul className="unorderedList">
-          {allDishes.map(eachCategory => (
-            <>
-              <li className="bodyContainer" key={eachCategory.dishId}>
-                <div className="DishItemContianer">
-                  <img
-                    className="veg/non-vegIcon"
-                    src={eachCategory.nxturl}
-                    alt="vegIcon"
-                  />
-                  <div className="midSection">
-                    <p className="dishName">{eachCategory.dishName}</p>
-                    <p className="sarValue">
-                      {eachCategory.dishCurrency} {eachCategory.dishPrice}
-                    </p>
-                    <p className="Ingredients">
-                      {eachCategory.dishDescription}
-                    </p>
-                    {eachCategory.dishAvailability ? (
-                      <div className="incrementdecrementButtonContainer">
-                        <button
-                          className="minusplusIconButton"
-                          onClick={() =>
-                            this.onClickMinusButton(eachCategory.dishId)
-                          }
-                        >
-                          -
-                        </button>
-                        <p>{dishCounts[eachCategory.dishId] || 0}</p>
-                        <button
-                          className="minusplusIconButton"
-                          onClick={() =>
-                            this.onClickPlusButton(eachCategory.dishId)
-                          }
-                        >
-                          +
-                        </button>
-                      </div>
-                    ) : (
-                      <p>Not available</p>
-                    )}
-                    {eachCategory.addonCat.length > 0 && (
-                      <p>Customizations available</p>
-                    )}
-                  </div>
-                  <p className="calories">
-                    {eachCategory.dishCalories} calories
-                  </p>
-                  <img
-                    className="dishImage"
-                    src={eachCategory.dishImage}
-                    alt="dishImage"
-                  />
-                </div>
-              </li>
-            </>
-          ))}
-        </ul>
+        {this.renderCartItems()}
       </>
     )
   }
 }
+
+Home.contextType = CartContext
 
 export default Home
