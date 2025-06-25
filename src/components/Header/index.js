@@ -4,6 +4,8 @@ import {Link, withRouter} from 'react-router-dom'
 
 import {IoCartOutline} from 'react-icons/io5'
 
+import {AiOutlineShoppingCart} from 'react-icons/ai'
+
 import Cookies from 'js-cookie'
 
 import CartContext from '../../context/CartContext'
@@ -25,20 +27,25 @@ const Header = props => {
 
           return (
             <nav className="navbarContainer">
-              <h1 className="logoHeading">{restaurantName}</h1>
-              <ul className="unorderedList">
-                <Link to="/" className="linkedItems">
-                  <li className="menuItems">Home</li>
-                </Link>
-              </ul>
+              <Link to="/" className="linkedItems">
+                <h1 className="logoHeading">{restaurantName}</h1>
+              </Link>
               <div className="orderTextContainer">
                 <p className="myOrderText">My Orders</p>
-                <Link to="/cart" className="linkedItems">
-                  <button className="cartIcon" data-testid="cart" type="button">
-                    <IoCartOutline size={25} />
-                  </button>
-                  <p>{cartListLength}</p>
-                </Link>
+                <div className="cart-icon-link">
+                  <Link to="/cart">
+                    <button
+                      type="button"
+                      className="cart-icon-button"
+                      data-testid="cart"
+                    >
+                      <AiOutlineShoppingCart className="cart-icon" />
+                    </button>
+                  </Link>
+                  <div className="cart-count-badge">
+                    <p className="m-0 cart-count">{cartListLength}</p>
+                  </div>
+                </div>
                 <button
                   type="submit"
                   className="logout-button"

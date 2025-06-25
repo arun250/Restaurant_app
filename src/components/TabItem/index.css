@@ -1,14 +1,22 @@
 .tabList {
   list-style-type: none;
+  flex-shrink: 0;
+  flex-grow: 1;
+  padding: 10px 0px;
+  text-align: center;
+  cursor: pointer;
 }
 .menuCategoryButton {
-  background-color: transparent;
+  font-family: 'Roboto';
+  font-weight: 500;
+  font-size: 18px;
+  padding: 0;
   border: none;
-  cursor: pointer;
-  font-size: 16px;
-  margin-right: 10px;
+  background-color: transparent;
+  color: black;
 }
 .activeButton {
-  color: red;
-  border-bottom: 1px solid red;
+  color: #ff6347;
+  border-bottom: 2px solid #ff6347;
+  font-weight: 600;
 }

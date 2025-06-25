@@ -6,9 +6,9 @@ const TabItem = props => {
   const className = onActive ? 'activeButton' : ''
   return (
     <>
-      <li className="tabList">
+      <li className={`tabList ${className}`}>
         <button
-          className={`menuCategoryButton ${className}`}
+          className="menuCategoryButton"
           onClick={() => onClickTabItem(menuCategoryId)}
         >
           {menuCategory}

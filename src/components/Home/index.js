@@ -162,14 +162,20 @@ class Home extends Component {
                 return (
                   <li className="bodyContainer" key={eachCategory.dishId}>
                     <div className="DishItemContianer">
-                      <img
-                        src={eachCategory.nxturl}
-                        alt="vegIcon"
-                        className="veg/non-vegIcon"
-                      />
+                      <div
+                        className={`veg-border ${
+                          eachCategory.dishType === 1 ? 'non-veg-border' : ''
+                        } me-3`}
+                      >
+                        <div
+                          className={`veg-round ${
+                            eachCategory.dishType === 1 ? 'non-veg-round' : ''
+                          }`}
+                        />
+                      </div>
 
                       <div className="midSection">
-                        <p className="dishName">{eachCategory.dishName}</p>
+                        <h1 className="dishName">{eachCategory.dishName}</h1>
                         <p className="sarValue">
                           {eachCategory.dishCurrency} {eachCategory.dishPrice}
                         </p>
@@ -189,7 +195,7 @@ class Home extends Component {
                               >
                                 -
                               </button>
-                              <p>{quantity}</p>
+                              <p className="quantity">{quantity}</p>
                               <button
                                 className="minusplusIconButton"
                                 onClick={() =>
@@ -207,20 +213,22 @@ class Home extends Component {
                                   value.addCartItem({...eachCategory, quantity})
                                 }}
                               >
-                                Add to Cart
+                                ADD TO CART
                               </button>
                             )}
                           </>
                         ) : (
-                          <p>Not available</p>
+                          <p className="not-availability-text">Not available</p>
                         )}
 
                         {eachCategory.addonCat.length > 0 && (
-                          <p>Customizations available</p>
+                          <p className="addon-availability-text mb-0">
+                            Customizations available
+                          </p>
                         )}
                       </div>
 
-                      <p className="calories">
+                      <p className="dish-calories">
                         {eachCategory.dishCalories} calories
                       </p>
                       <img

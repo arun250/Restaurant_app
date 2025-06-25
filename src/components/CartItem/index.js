@@ -1,5 +1,6 @@
 import {BsPlusSquare, BsDashSquare} from 'react-icons/bs'
 import {AiFillCloseCircle} from 'react-icons/ai'
+import {FaRegTrashAlt} from 'react-icons/fa'
 
 import CartContext from '../../context/CartContext'
 
@@ -34,6 +35,9 @@ const CartItem = props => (
           <div className="cart-item-details-container">
             <div className="cart-product-title-brand-container">
               <p className="cart-product-title">{dishName}</p>
+              <p className="cart-total-price">
+                SAR {dishPrice * cartItemDetails.quantity}
+              </p>
             </div>
             <div className="cart-quantity-container">
               <button
@@ -53,9 +57,6 @@ const CartItem = props => (
               </button>
             </div>
             <div className="total-price-remove-container">
-              <p className="cart-total-price">
-                Rs {dishPrice * cartItemDetails.quantity}/-
-              </p>
               <button
                 className="remove-button"
                 type="button"
@@ -71,7 +72,7 @@ const CartItem = props => (
             type="button"
             onClick={onRemoveCartItem}
           >
-            <AiFillCloseCircle color="#616E7C" size={20} />
+            <FaRegTrashAlt color="#dc3545" />
           </button>
         </li>
       )

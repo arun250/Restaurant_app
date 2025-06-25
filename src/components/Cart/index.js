@@ -22,17 +22,19 @@ const Cart = props => (
             {showEmptyView ? (
               <EmptyCartView />
             ) : (
-              <div className="cart-content-container">
-                <h1 className="cart-heading">My Cart</h1>
-                <button
-                  type="button"
-                  className="remove-all-button"
-                  onClick={removeAllitems}
-                >
-                  Remove All
-                </button>
+              <>
+                <div className="cart-content-container">
+                  <h1 className="cart-heading">My Cart</h1>
+                  <button
+                    type="button"
+                    className="remove-all-button"
+                    onClick={removeAllitems}
+                  >
+                    Remove All
+                  </button>
+                </div>
                 <CartList />
-              </div>
+              </>
             )}
           </div>
         </>
