@@ -19,6 +19,7 @@ import Cart from './components/Cart'
 class App extends Component {
   state = {
     cartList: [],
+    resname: '',
   }
 
   incrementCartItemQuantity = dishId => {
@@ -80,17 +81,23 @@ class App extends Component {
     this.setState({cartList: []})
   }
 
+  addingResName = newName => {
+    this.setState({resname: newName})
+  }
+
   render() {
-    const {cartList} = this.state
+    const {cartList, resname} = this.state
     return (
       <CartContext.Provider
         value={{
           cartList,
+          resname,
           addCartItem: this.addCartItem,
           removeCartItem: this.removeCartItem,
           incrementCartItemQuantity: this.incrementCartItemQuantity,
           decrementCartItemQuantity: this.decrementCartItemQuantity,
           removeAllCartItems: this.removeAllCartItems,
+          addingResName: this.addingResName,
         }}
       >
         <BrowserRouter>

@@ -25,8 +25,9 @@ class Home extends Component {
 
   componentDidMount() {
     this.getMenuList()
-    const {dishCounts} = this.state
+    const {dishCounts, cafeName} = this.state
     const {cartList} = this.context
+
     cartList.forEach(item => {
       dishCounts[item.dishId] = item.quantity
     })
@@ -97,20 +98,24 @@ class Home extends Component {
       })),
     }))
     const restaurantName = data[0].restaurant_name
-    console.log(restaurantName)
-    console.log(fetchedData)
 
-    this.setState({
-      menuList: fetchedData,
-      activeTabId: fetchedData[0].menuCategoryId,
-      cafeName: restaurantName,
-      categoryDishes: fetchedData.categoryDishes,
-    })
+    this.setState(
+      {
+        menuList: fetchedData,
+        activeTabId: fetchedData[0].menuCategoryId,
+        cafeName: restaurantName,
+        categoryDishes: fetchedData.categoryDishes,
+      },
+      () => {
+        const {addingResName} = this.context
+        addingResName(restaurantName)
+      },
+    )
   }
 
   renderNavbar = () => {
     const {dishCounts, cafeName} = this.state
-
+    console.log(cafeName)
     return (
       <>
         <Header restaurantName={cafeName} />
@@ -126,6 +131,7 @@ class Home extends Component {
           incrementCartItemQuantity,
           decrementCartItemQuantity,
           addCartItem,
+          resname,
         } = value
         const {menuList, activeTabId} = this.state
 
@@ -152,6 +158,7 @@ class Home extends Component {
             <ul className="unorderedList">
               {allDishes.map(eachCategory => {
                 const {dishCounts} = this.state
+
                 const quantity = dishCounts[eachCategory.dishId] || 0
 
                 const existingItem = cartList.find(

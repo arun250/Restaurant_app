@@ -6,6 +6,8 @@ import {IoCartOutline} from 'react-icons/io5'
 
 import {AiOutlineShoppingCart} from 'react-icons/ai'
 
+import {useContext} from 'react'
+
 import Cookies from 'js-cookie'
 
 import CartContext from '../../context/CartContext'
@@ -21,14 +23,14 @@ const Header = props => {
     <>
       <CartContext.Consumer>
         {value => {
-          const {cartList} = value
+          const {cartList, resname} = value
 
           const cartListLength = cartList.length
 
           return (
             <nav className="navbarContainer">
               <Link to="/" className="linkedItems">
-                <h1 className="logoHeading">{restaurantName}</h1>
+                <h1 className="logoHeading">{resname}</h1>
               </Link>
               <div className="orderTextContainer">
                 <p className="myOrderText">My Orders</p>
