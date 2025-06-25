@@ -1,5 +1,7 @@
 Develop a restaurant page, ensuring it is user-friendly and visually appealing.
 
+## Published Url: https://arunnxtwaveres.ccbp.tech/
+
 #### Mobile Interface
 
 <a href="https://res.cloudinary.com/dupvp9gj9/image/upload/v1688464567/Restaurant_page_movie-view_dqv1fl.png" target=_blank_>
